@@ -1,0 +1,22 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:Foldout text="Info" name="InfoFoldout" view-data-key="SecureNetworkingInfoFoldout" style="-unity-font-style: bold; font-size: 14px; background-color: rgba(0, 0, 0, 0.2); padding-top: 5px; padding-right: 15px; padding-bottom: 5px; padding-left: 15px;">
+        <ui:VisualElement name="Info" style="flex-grow: 1; font-size: 12px; -unity-font-style: normal; margin-left: -13px;">
+            <ui:Label tabindex="-1" text="Allows data to be sent securely over the network without allowing client users to modify it by validating the sender.&#10;Requires a &lt;b&gt;SecureNetworkBehaviour&lt;/b&gt; to be connected to it.&#10;&#10;https://drblackrat.xyz" parse-escape-sequences="true" display-tooltip-when-elided="true" style="white-space: normal;" />
+        </ui:VisualElement>
+    </ui:Foldout>
+    <ui:VisualElement name="General" style="flex-grow: 1; padding-left: 10px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px;">
+        <ui:Label tabindex="-1" text="General" parse-escape-sequences="true" display-tooltip-when-elided="true" style="padding-right: 0; padding-left: 0; font-size: 14px; -unity-font-style: bold;" />
+        <uie:PropertyField name="secureNetworkingEnabled" binding-path="secureNetworkingEnabled" label="Use Secure Networking" />
+        <uie:PropertyField name="resetIfNoAllowedSenderPresent" binding-path="resetIfNoAllowedSenderPresent" label="Reset If No Allowed Sender Present" />
+        <uie:PropertyField name="resetIfLastSenderLeaves" binding-path="resetIfLastSenderLeaves" label="Reset If Last Sender Left" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Retrying" style="flex-grow: 1; padding-left: 10px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px;">
+        <ui:Label tabindex="-1" text="Retrying" parse-escape-sequences="true" display-tooltip-when-elided="true" style="padding-right: 0; padding-left: 0; font-size: 14px; -unity-font-style: bold;" />
+        <uie:PropertyField name="netRetryDelay" binding-path="netRetryDelay" label="Retry Dealy" />
+        <uie:PropertyField name="maxNetAttempts" binding-path="maxNetAttempts" label="Max Attempts" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Debug" style="flex-grow: 1; padding-left: 10px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px;">
+        <ui:Label tabindex="-1" text="Debug" parse-escape-sequences="true" display-tooltip-when-elided="true" style="padding-right: 0; padding-left: 0; font-size: 14px; -unity-font-style: bold;" />
+        <uie:PropertyField name="extraLogging" binding-path="extraLogging" label="Extra Logging" />
+    </ui:VisualElement>
+</ui:UXML>
