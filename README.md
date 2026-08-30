@@ -2,7 +2,7 @@
 
 Secure Networking is available via the [Creator Companion](https://vcc.docs.vrchat.com/) as a VPM package!
 
-### [⬇️ My VPM / Creator Companion Listing](https://vpm.drblackrat.xyz)
+### [⬇️ VPM / Creator Companion Listing](https://vpm.drblackrat.xyz)
 
 For Standalone Unity I also provide a Unity Package with every release.
 
