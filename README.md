@@ -55,17 +55,24 @@ It takes care of sending and receiving the network events, validating the sender
 
 You connect your `SecureNetworkBehaviour` to a `SecureNetworkingInstance` and then use the instance to send your network data.
 
-# Setup
+# Example
 
+Take a look at the included demo scene and example scripts! They should help you with understanding the setup and how everything connects.
+
+You can find it in Unity under:
+
+`Tools > DrBlackRat > Secure Networking`
+
+# Setup
 1. Create a script that inherits from `SecureNetworkBehaviour`.
 2. Implement its required methods.
-3. Add a `SecureNetworkingInstance` to your scene.
+3. Add a `SecureNetworkingInstance` prefab to your scene.
+
+   * You can find it under `Tools > DrBlackRat > Secure Networking`.
 4. Connect your behaviour to the instance.
 5. Call `_SendNetworkData()` whenever you want to send an update.
 
 You can also call `_ValidateAllowedSenders()` whenever the players who are allowed to send data change.
-
-For an example of how this works, take a look at the included example scene / scripts.
 
 # Important
 
