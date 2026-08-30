@@ -31,6 +31,14 @@ It also automatically keeps track of an <b>Authoritative Sender</b>. If they lea
 * Optionally reset the network state when no valid sender is available
 * Uses network events instead of normal manual Udon syncing
 
+## Try it out!
+
+You can visit the [Secure Networking Demo World](https://vrchat.com/home/world/wrld_d2be9538-de4c-4227-a393-19d69e485ea8) in VRChat to see how Secure Networking works.
+
+If you open your log while in the world and add yourself to the allowed users list, you will see plenty of log messages about how Secure Networking handles sending and receiving data.
+
+It's highly recommended to visit the world with another person for testing!
+
 # How to use it
 
 Secure Networking is made up of two scripts:
