@@ -20,6 +20,12 @@ namespace DrBlackRat.VRC.SecureNetworking.Editor
         {
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/xyz.drblackrat.vrc.securenetworking/Runtime/Secure Networking Instance.prefab");
             PrefabUtility.InstantiatePrefab(prefab);
-        }     
+        }
+        
+        [MenuItem("Tools/DrBlackRat/Secure Networking/Open GitHub", false, 3)]
+        public static void OpenGitHub()
+        {
+            Application.OpenURL("https://github.com/DrBlackRat/VRC-Secure-Networking");
+        }
     }
 }

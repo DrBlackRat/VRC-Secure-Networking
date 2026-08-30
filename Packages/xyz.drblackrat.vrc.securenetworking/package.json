@@ -1,7 +1,7 @@
 {
   "name": "xyz.drblackrat.vrc.securenetworking",
   "displayName": "Secure Networking",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A secure VRChat networking system that validates network event senders to prevent unauthorized players from modifying synced data.",
   "gitDependencies": {},
   "vpmDependencies": {

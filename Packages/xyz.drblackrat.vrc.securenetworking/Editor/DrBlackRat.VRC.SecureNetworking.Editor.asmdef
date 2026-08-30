@@ -1,12 +1,12 @@
 {
-    "name": "xyz.drblackrat.vrc.securenetworking.Editor",
+    "name": "DrBlackRat.VRC.SecureNetworking.Editor",
     "rootNamespace": "",
     "references": [
         "VRC.SDK3",
         "VRC.SDK3.Editor",
         "VRC.SDKBase",
         "VRC.SDKBase.Editor",
-        "xyz.drblackrat.vrc.securenetworking"
+        "DrBlackRat.VRC.SecureNetworking"
     ],
     "includePlatforms": [
         "Editor"

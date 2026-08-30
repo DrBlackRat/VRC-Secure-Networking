@@ -1,5 +1,5 @@
 {
-    "name": "xyz.drblackrat.vrc.securenetworking",
+    "name": "DrBlackRat.VRC.SecureNetworking",
     "rootNamespace": "",
     "references": [
         "VRC.SDK3",
