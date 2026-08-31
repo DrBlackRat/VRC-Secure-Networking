@@ -481,7 +481,7 @@ namespace DrBlackRat.VRC.SecureNetworking
 
         private void LogWarning(string message, Object context = null)
         {
-            if (logLevel != LogLevel.Warnings || logLevel != LogLevel.All)
+            if (logLevel != LogLevel.Warnings && logLevel != LogLevel.All)
             {
                 return;
             }
@@ -491,7 +491,7 @@ namespace DrBlackRat.VRC.SecureNetworking
         
         private void LogError(string message, Object context = null)
         {
-            if (logLevel != LogLevel.Errors || logLevel != LogLevel.Warnings || logLevel != LogLevel.All)
+            if (logLevel != LogLevel.Errors && logLevel != LogLevel.Warnings && logLevel != LogLevel.All)
             {
                 return;
             }
@@ -503,9 +503,9 @@ namespace DrBlackRat.VRC.SecureNetworking
 
     internal enum LogLevel
     {
-        None,
-        Errors,
-        Warnings,
-        All
+        None = 0,
+        Errors = 1,
+        Warnings = 2,
+        All = 3
     }
 }
