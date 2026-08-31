@@ -2765,7 +2765,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<b>Secure Networking V1.0</b>
+  m_text: '<b>Secure Networking V1.1.0</b>
 
 
     Secure Networking is a networking

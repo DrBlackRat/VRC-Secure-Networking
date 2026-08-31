@@ -1,4 +1,4 @@
-# Secure Networking V1.0.0 by DrBlackRat
+# Secure Networking V1.1.0 by DrBlackRat
 
 GitHub: https://github.com/DrBlackRat/VRC-Secure-Networking
 
