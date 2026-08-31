@@ -176,13 +176,7 @@ namespace DrBlackRat.VRC.SecureNetworking
                 return;
             }
             _netSendingJson = data;
-
-            if (NetworkCalling.GetQueuedEvents(this, nameof(OnNetworkedDataReceived)) != 0)
-            {
-                _netSendRetryEventHandle = VRCTween.DelayedCall(this, nameof(_TrySendNet), NetSendDelay);
-                return;
-            }
-
+            
             _TrySendNet();
         }
 
@@ -457,7 +451,14 @@ namespace DrBlackRat.VRC.SecureNetworking
         {
             if (!IsAllowedSender(_localPlayer))
             {
-                LogError("You are trying to send network data but you are not allowed to!", gameObject);
+                LogError("You are trying to send network data but are not allowed to!", gameObject);
+                return;
+            }
+            
+            if (NetworkCalling.GetQueuedEvents(this, nameof(OnNetworkedDataReceived)) != 0)
+            {
+                _netSendRetryEventHandle = VRCTween.DelayedCall(this, nameof(_TrySendNet), NetSendDelay);
+                Log($"Could not send data! Events are already queued up, will try again in {NetSendDelay}s.", gameObject);
                 return;
             }
 
