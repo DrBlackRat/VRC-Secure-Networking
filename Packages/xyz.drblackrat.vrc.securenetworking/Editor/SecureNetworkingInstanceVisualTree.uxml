@@ -17,6 +17,6 @@
     </ui:VisualElement>
     <ui:VisualElement name="Debug" style="flex-grow: 1; padding-left: 10px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px;">
         <ui:Label tabindex="-1" text="Debug" parse-escape-sequences="true" display-tooltip-when-elided="true" style="padding-right: 0; padding-left: 0; font-size: 14px; -unity-font-style: bold;" />
-        <uie:PropertyField name="extraLogging" binding-path="extraLogging" label="Extra Logging" />
+        <uie:PropertyField name="extraLogging" binding-path="logLevel" label="Log Level" />
     </ui:VisualElement>
 </ui:UXML>

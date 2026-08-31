@@ -2765,7 +2765,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<b>Secure Networking V1.0</b>
+  m_text: '<b>Secure Networking V1.1.0</b>
 
 
     Secure Networking is a networking
@@ -4634,21 +4634,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2461684385958564643, guid: b589a633615ab6a4f8591370cf19e61a,
         type: 3}
-    - target: {fileID: 3245854928989655966, guid: b589a633615ab6a4f8591370cf19e61a,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.001
-      objectReference: {fileID: 0}
-    - target: {fileID: 3245854928989655966, guid: b589a633615ab6a4f8591370cf19e61a,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.001
-      objectReference: {fileID: 0}
-    - target: {fileID: 3245854928989655966, guid: b589a633615ab6a4f8591370cf19e61a,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.001
-      objectReference: {fileID: 0}
     - target: {fileID: 3245854928989655966, guid: b589a633615ab6a4f8591370cf19e61a,
         type: 3}
       propertyPath: m_LocalPosition.x
