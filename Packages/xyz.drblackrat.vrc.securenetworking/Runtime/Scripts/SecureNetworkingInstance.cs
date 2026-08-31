@@ -16,11 +16,11 @@ namespace DrBlackRat.VRC.SecureNetworking
     //   sending the current state to new joiners.
     // - If the sender cannot be validated temporarily (e.g., the whitelist has not been initialized yet or a string
     //   load is still pending), the system will retry a few times before giving up.
-    
+
     /// <summary>
     /// Allows data to be sent securely over the network without allowing client users to modify it by validating the sender.
     /// Requires a <see cref="SecureNetworkBehaviour"/> to be connected to it.
-    /// <summary>
+    /// </summary>
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public sealed class SecureNetworkingInstance : UdonSharpBehaviour
     {
@@ -91,6 +91,13 @@ namespace DrBlackRat.VRC.SecureNetworking
         private string _logPrefix = "[<color=#ff462e>Secure Networking</color>] ";
         private const int NetMaxQueueSize = 5;
         private const float NetSendDelay = 0.5f;
+        
+        // Public Data Keys
+        
+        /// <summary>
+        /// The key used to store the player who sent the networked data inside the received data <see cref="DataDictionary"/>.
+        /// </summary>
+        public readonly DataToken SendingPlayerKey = new DataToken("SendingPlayer");
         #endregion
         
         #region Unity / VRChat Events
@@ -387,6 +394,7 @@ namespace DrBlackRat.VRC.SecureNetworking
             }
 
             _netReceivedDataDictionary = result.DataDictionary;
+            _netReceivedDataDictionary.SetValue(SendingPlayerKey, new DataToken(callingPlayer));
             _netSendingPlayer = callingPlayer;
 
             _netAttempts = 0;

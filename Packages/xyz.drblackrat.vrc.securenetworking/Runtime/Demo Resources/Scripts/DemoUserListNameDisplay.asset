@@ -62,7 +62,7 @@ MonoBehaviour:
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: DrBlackRat.VRC.SecureNetworking.Demo.DemoUserList, xyz.drblackrat.vrc.securenetworking
+      Data: DrBlackRat.VRC.SecureNetworking.Demo.DemoUserList, DrBlackRat.VRC.SecureNetworking
     - Name: 
       Entry: 8
       Data: 

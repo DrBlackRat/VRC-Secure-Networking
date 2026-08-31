@@ -44,7 +44,7 @@ namespace DrBlackRat.VRC.SecureNetworking
         #region Sending & Reciving
         /// <summary>
         /// Called when networked data is received and the sender was allowed to send it.
-        /// The <see cref="DataDictionary"/> returned should contain the same key value pairs used by <see cref="_GetNetworkDataForSending"/> and needs to be serializable to JSON.
+        /// The <see cref="DataDictionary"/> returned should contain the same key value pairs used by <see cref="_GetNetworkDataForSending"/>, as well as the key <see cref="SecureNetworkingInstance.SendingPlayerKey"/> containing the <see cref="VRCPlayerApi"/> of the player who sent the data.
         /// </summary>
         /// <param name="receivedData"><see cref="DataDictionary"/> containg the data that was received.</param>
         public abstract void _OnNetworkDataReceived(DataDictionary receivedData);
