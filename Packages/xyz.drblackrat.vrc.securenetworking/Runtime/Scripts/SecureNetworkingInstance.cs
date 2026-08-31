@@ -47,9 +47,8 @@ namespace DrBlackRat.VRC.SecureNetworking
         private int maxNetAttempts = 4;
         
         [SerializeField]
-        [Tooltip("Adds additional logging for things like successful attempts, updating a newly joined player, etc." +
-                 "\nBy default only errors for failed attempts, etc. are logged.")]
-        private bool extraLogging = true;
+        [Tooltip("How much logging to output.")]
+        private LogLevel logLevel = LogLevel.All;
         
         //Receiving Data
         private DataDictionary _netReceivedDataDictionary;
@@ -118,11 +117,8 @@ namespace DrBlackRat.VRC.SecureNetworking
             }
 
             SendCustomNetworkEvent(NetworkEventTarget.Others, nameof(OnNetworkedDataReceived), player.playerId, data);
+            Log($"Sending initial network data to {player.displayName}!", gameObject);
 
-            if (extraLogging)
-            {
-                Debug.Log(_logPrefix + $"Sending initial network data to {player.displayName}!", gameObject);
-            }
         }
         
         public override void OnPlayerLeft(VRCPlayerApi player)
@@ -135,7 +131,7 @@ namespace DrBlackRat.VRC.SecureNetworking
                 
                 if (resetIfLastSenderLeaves)
                 {
-                    Debug.Log(_logPrefix + "Resetting to the default state because the sender left the instance.", gameObject);
+                    Log("Resetting to the default state because the sender left the instance.", gameObject);
                     ResetNetToDefault();
                 }
             }
@@ -154,7 +150,7 @@ namespace DrBlackRat.VRC.SecureNetworking
         {
             if (_isConnected)
             {
-                Debug.LogError(_logPrefix + "Could not establish connection! This Secure Networking Instance is already connected.", gameObject);
+                LogError("Could not establish connection! This Secure Networking Instance is already connected.", gameObject);
                 return false;
             }
             
@@ -176,6 +172,7 @@ namespace DrBlackRat.VRC.SecureNetworking
             var data = GetSerializedData();
             if (string.IsNullOrEmpty(data))
             {
+                LogError("Could not send network data! No data was serialized.", gameObject);
                 return;
             }
             _netSendingJson = data;
@@ -205,7 +202,7 @@ namespace DrBlackRat.VRC.SecureNetworking
         {
             if (!_isConnected)
             {
-                Debug.LogError(_logPrefix + "Could not check if player is allowed to send data! Secure Networking instance is not connected.", gameObject);
+                LogError("Could not check if player is allowed to send data! Secure Networking instance is not connected.", gameObject);
                 return false;
             }
             return _networkBehaviour._IsAllowedSender(player);
@@ -215,7 +212,7 @@ namespace DrBlackRat.VRC.SecureNetworking
         {
             if (!_isConnected)
             {
-                Debug.LogError(_logPrefix + "Could not get allowed sender! Secure Networking instance is not connected.", gameObject);
+                LogError("Could not get allowed sender! Secure Networking instance is not connected.", gameObject);
                 return null;
             }
             return _networkBehaviour._GetAllowedSender();
@@ -225,7 +222,7 @@ namespace DrBlackRat.VRC.SecureNetworking
         {
             if (!_isConnected)
             {
-                Debug.LogError(_logPrefix + "Could not update authoritative sender! Secure Networking instance is not connected.", gameObject);
+                LogError("Could not update authoritative sender! Secure Networking instance is not connected.", gameObject);
                 return;
             }
             _networkBehaviour._OnAuthoritativeSenderChanged(player);
@@ -236,7 +233,7 @@ namespace DrBlackRat.VRC.SecureNetworking
         {
             if (!_isConnected)
             {
-                Debug.LogError(_logPrefix + "Could not apply received network data! Secure Networking instance is not connected.", gameObject);
+                LogError("Could not apply received network data! Secure Networking instance is not connected.", gameObject);
                 return;
             }
             _networkBehaviour._OnNetworkDataReceived(receivedData);
@@ -246,7 +243,7 @@ namespace DrBlackRat.VRC.SecureNetworking
         {
             if (!_isConnected)
             {
-                Debug.LogError(_logPrefix + "Could not reset network data! Secure Networking instance is not connected.", gameObject);
+                LogError("Could not reset network data! Secure Networking instance is not connected.", gameObject);
                 return;
             }
             _networkBehaviour._ResetNetToDefault();
@@ -256,7 +253,7 @@ namespace DrBlackRat.VRC.SecureNetworking
         {
             if (!_isConnected)
             {
-                Debug.LogError(_logPrefix + "Could not get sending network data! Secure Networking instance is not connected.", gameObject);
+                LogError("Could not get sending network data! Secure Networking instance is not connected.", gameObject);
                 return null;
             }
             return _networkBehaviour._GetNetworkDataForSending();
@@ -271,40 +268,28 @@ namespace DrBlackRat.VRC.SecureNetworking
         {
             if (!Utilities.IsValid(AuthoritativeSender))
             {
-                if (extraLogging)
-                {
-                    Debug.Log(_logPrefix + "Authoritative Sender is null.", gameObject);
-                }
+                Log("Authoritative Sender is null.", gameObject);
                 FindNewAuthoritativeSender();
                 return;
             }
             
             if (!AuthoritativeSender.IsValid())
             {
-                if (extraLogging)
-                {
-                    Debug.Log(_logPrefix + "Authoritative Sender is invalid.", gameObject);
-                }
+                Log("Authoritative Sender is invalid.", gameObject);
                 FindNewAuthoritativeSender();
                 return;
             }
             
             if (AuthoritativeSender == _leavingPlayer)
             {
-                if (extraLogging)
-                {
-                    Debug.Log(_logPrefix + "Authoritative Sender is leaving the instance.", gameObject);
-                }
+                Log("Authoritative Sender is leaving the instance.", gameObject);
                 FindNewAuthoritativeSender();
                 return;
             }
             
             if (secureNetworkingEnabled && !IsAllowedSender(AuthoritativeSender))
             {
-                if (extraLogging)
-                {
-                    Debug.Log(_logPrefix + $"{AuthoritativeSender.displayName} is the Authoritative Sender, but isn't allowed to send data.", gameObject);
-                }
+                Log($"{AuthoritativeSender.displayName} is the Authoritative Sender, but isn't allowed to send data.", gameObject);
                 FindNewAuthoritativeSender();
                 return;
             }
@@ -318,7 +303,7 @@ namespace DrBlackRat.VRC.SecureNetworking
             if (!secureNetworkingEnabled)
             {
                 var master = Networking.Master;
-                Debug.Log(_logPrefix + $"Transferring Authoritative Sender to the Master ({master.displayName}).", gameObject);
+                Log($"Transferring Authoritative Sender to the Master ({master.displayName}).", gameObject);
                 AuthoritativeSender = master;
                 _authoritativeSenderWasReset = false;
                 return;
@@ -334,20 +319,20 @@ namespace DrBlackRat.VRC.SecureNetworking
                     return;
                 }
                 
-                Debug.Log(_logPrefix + "Could not find a new player to transfer Authoritative Sender to. Removing current Authoritative Sender to prevent syncing issues.", gameObject);
+                Log("Could not find a new player to transfer Authoritative Sender to. Removing current Authoritative Sender to prevent syncing issues.", gameObject);
                 AuthoritativeSender = null;
                 _authoritativeSenderWasReset = true;
 
                 if (resetIfNoAllowedSenderPresent)
                 {
-                    Debug.Log(_logPrefix + "Resetting to the default state as there is no valid Authoritative Sender.", gameObject);
+                    Log("Resetting to the default state as there is no valid Authoritative Sender.", gameObject);
                     ResetNetToDefault();
                 }
                 
                 return;
             }
             
-            Debug.Log(_logPrefix + $"Transferring Authoritative Sender to {newOwner.displayName}.", gameObject);
+            Log($"Transferring Authoritative Sender to {newOwner.displayName}.", gameObject);
             _authoritativeSenderWasReset = false;
             AuthoritativeSender = newOwner;
         }
@@ -365,14 +350,14 @@ namespace DrBlackRat.VRC.SecureNetworking
         {
             if (!NetworkCalling.InNetworkCall)
             {
-                Debug.LogError(_logPrefix + $"{nameof(OnNetworkDataReceived)} can only be called as a network event!", gameObject);
+                LogError($"{nameof(OnNetworkDataReceived)} can only be called as a network event!", gameObject);
                 return;
             }
 
             var callingPlayer = NetworkCalling.CallingPlayer;
             if (!Utilities.IsValid(callingPlayer))
             {
-                Debug.LogError(_logPrefix + $"{nameof(OnNetworkDataReceived)} called by an invalid player!", gameObject);
+                LogError($"{nameof(OnNetworkDataReceived)} called by an invalid player!", gameObject);
                 return;
             }
 
@@ -383,13 +368,13 @@ namespace DrBlackRat.VRC.SecureNetworking
 
             if (!VRCJson.TryDeserializeFromJson(netJson, out DataToken result))
             {
-                Debug.LogError(_logPrefix + $"{nameof(OnNetworkDataReceived)} could not deserialize from JSON due to {result.ToString()}!", gameObject);
+                LogError($"{nameof(OnNetworkDataReceived)} could not deserialize from JSON due to {result.ToString()}!", gameObject);
                 return;
             }
 
             if (result.TokenType != TokenType.DataDictionary)
             {
-                Debug.LogError(_logPrefix + $"{nameof(OnNetworkDataReceived)} received data is not a data dictionary! ({gameObject.name})", gameObject);
+                LogError($"{nameof(OnNetworkDataReceived)} received data is not a data dictionary! ({gameObject.name})", gameObject);
                 return;
             }
 
@@ -413,11 +398,7 @@ namespace DrBlackRat.VRC.SecureNetworking
             
             if (!secureNetworkingEnabled)
             {
-                if (extraLogging)
-                {
-                    Debug.Log(_logPrefix + $"{_netSendingPlayer.displayName} has sent network data on {gameObject.name}.", gameObject);
-                }
-                
+                Log($"{_netSendingPlayer.displayName} has sent network data on {gameObject.name}.", gameObject);
                 AuthoritativeSender = _netSendingPlayer;
                 OnNetworkDataReceived(_netReceivedDataDictionary);
 
@@ -428,22 +409,22 @@ namespace DrBlackRat.VRC.SecureNetworking
             {
                 if (_netAttempts >= maxNetAttempts)
                 {
-                    Debug.LogError(_logPrefix + $"{_netSendingPlayer.displayName} is not allowed to send data! Aborting applying net data after {_netAttempts} / {maxNetAttempts} attempts.", gameObject);
+                    LogError( $"{_netSendingPlayer.displayName} is not allowed to send data! Aborting applying net data after {_netAttempts} / {maxNetAttempts} attempts.", gameObject);
                     return;
                 }
                 
-                Debug.LogWarning(_logPrefix + $"{_netSendingPlayer.displayName} is not allowed to send data! Retrying in {netRetryDelay}s, Attempt {_netAttempts} / {maxNetAttempts}.", gameObject);
+                LogWarning($"{_netSendingPlayer.displayName} is not allowed to send data! Retrying in {netRetryDelay}s, Attempt {_netAttempts} / {maxNetAttempts}.", gameObject);
                 _netReceiveRetryEventHandle = VRCTween.DelayedCall(this, nameof(_TryApplyNetData), netRetryDelay);
                 return;
             }
 
             if (_netAttempts > 1)
             {
-                Debug.Log(_logPrefix + $"{_netSendingPlayer.displayName} is now allowed to send data! Applying networked data after {_netAttempts} / {maxNetAttempts} attempts.", gameObject);
+                LogWarning($"{_netSendingPlayer.displayName} is now allowed to send data! Applying networked data after {_netAttempts} / {maxNetAttempts} attempts.", gameObject);
             }
-            else if (extraLogging)
+            else
             {
-                Debug.Log(_logPrefix + $"{_netSendingPlayer.displayName} has sent network data.", gameObject);
+                Log($"{_netSendingPlayer.displayName} has sent network data.", gameObject);
             }
             
             AuthoritativeSender = _netSendingPlayer;
@@ -461,7 +442,7 @@ namespace DrBlackRat.VRC.SecureNetworking
         {
             if (!VRCJson.TrySerializeToJson(GetNetworkDataForSending(), JsonExportType.Minify, out DataToken result))
             {
-                Debug.LogError(_logPrefix + "Failed to serialize data for sending! No data will be sent.", gameObject);
+                LogError("Failed to serialize data for sending! No data will be sent.", gameObject);
                 return null;
             }
 
@@ -476,18 +457,54 @@ namespace DrBlackRat.VRC.SecureNetworking
         {
             if (!IsAllowedSender(_localPlayer))
             {
-                Debug.LogError(_logPrefix + "You are trying to send network data but you are not allowed to!", gameObject);
+                LogError("You are trying to send network data but you are not allowed to!", gameObject);
                 return;
             }
 
             SendCustomNetworkEvent(NetworkEventTarget.Others, nameof(OnNetworkedDataReceived), -1, _netSendingJson);
             AuthoritativeSender = _localPlayer;
-
-            if (extraLogging)
-            {
-                Debug.Log(_logPrefix + "Sending network data!", gameObject);
-            }
+            Log("Sending network data!", gameObject);
         }
         #endregion
+        
+        #region Logging
+        private void Log(string message, Object context = null)
+        {
+            if (logLevel != LogLevel.All)
+            {
+                return;
+            }
+            
+            Debug.Log(_logPrefix + message, context);
+        }
+
+        private void LogWarning(string message, Object context = null)
+        {
+            if (logLevel != LogLevel.Warnings || logLevel != LogLevel.All)
+            {
+                return;
+            }
+            
+            Debug.LogWarning(_logPrefix + message, context);
+        }
+        
+        private void LogError(string message, Object context = null)
+        {
+            if (logLevel != LogLevel.Errors || logLevel != LogLevel.Warnings || logLevel != LogLevel.All)
+            {
+                return;
+            }
+            
+            Debug.LogError(_logPrefix + message, context);
+        }
+        #endregion
+    }
+
+    internal enum LogLevel
+    {
+        None,
+        Errors,
+        Warnings,
+        All
     }
 }
